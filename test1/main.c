@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h> 
 #include <unistd.h> 
@@ -14,8 +14,9 @@
 
 int main(void)
 {
+    int i = 0;
     int fin;
-    fin = open("/dev/ttyUSB0", O_RDWR | O_NOCTTY);
+    fin = open("/dev/ttyS7", O_RDWR | O_NOCTTY);
     
     struct termios SerialPortSettings;
     tcgetattr(fin, &SerialPortSettings);
@@ -36,12 +37,12 @@ int main(void)
     
     //устанавливает атрибуты струк термос
     if((tcsetattr(fin,TCSANOW,&SerialPortSettings)) != 0)
-        printf("\n  ERROR ! in Setting attributes");
+        printf("\n\r  ERROR ! in Setting attributes");
     else
-        printf("\n  BaudRate = 9600 \n  StopBits = 1 \n  Parity   = none");
+        printf("\n\r  BaudRate = 9600 \n\r  StopBits = 1 \n\r  Parity   = none \n\r");
     
     char text[20];
-    read (fin, text, 20); 
+    while ((i += read(fin, text, 20)) < 20); 
     text[19] = 0;
     printf("%s\n\r", text);
     
